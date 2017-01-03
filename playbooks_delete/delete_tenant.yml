@@ -1,0 +1,17 @@
+
+- name: file=delete_tenant.yml Delete Project
+  connection: local
+  hosts: local
+  gather_facts: false
+  vars_files:
+    - vars/metacloud_vars.yml
+
+  tasks:
+   - name: Remove Project
+     os_project:
+      state: absent
+      name: "{{ tenant_name }}"
+      description: demodescription
+
+
+

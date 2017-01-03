@@ -1,0 +1,12 @@
+- name: file=imagedelete.yml Delete Cirros Image cirrosansible
+  connection: local
+  hosts: local
+  gather_facts: false
+  vars_files:
+    - vars/metacloud_vars.yml
+
+  tasks:
+   - name: Deleting image in progress
+     shell: glance image-delete "{{ image_name }}"   
+     ignore_errors: yes 
+

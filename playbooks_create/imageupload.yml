@@ -1,0 +1,28 @@
+- name: File=imageupload.yml upload Cirros Image cirrosansible
+  connection: local
+  hosts: local
+  gather_facts: false
+  vars_files:
+    - vars/metacloud_vars.yml
+
+  tasks:
+   - os_image:
+         name: "{{ image_name }}"
+         owner: "{{ project }}"
+         container_format: bare
+         disk_format: raw
+         state: present
+         filename: "{{ file_name }}"
+
+- name: Make Image Public
+  connection: local 
+  hosts: local
+  gather_facts: false
+  vars_files:
+    - vars/metacloud_vars.yml
+
+  tasks:
+
+    #shell: openstack  image list | awk '$4 == "{{ image_name }}" {print $2}'
+    - name: Make Image Public
+      shell: openstack image set --public --project "{{ project }}" "{{ image_name }}"

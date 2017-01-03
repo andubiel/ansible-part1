@@ -1,0 +1,22 @@
+
+- name: Delete Network
+  hosts: local
+  vars_files:
+    - vars/metacloud_vars.yml
+
+  tasks:
+
+
+    - os_network:
+          state: absent
+          name: "{{ privnet }}"
+          #project: "{{ project }}"
+    - os_subnet:
+          state: absent
+         # network_name: "{{ privnet }}"
+          #project: "{{ project }}"
+          name: "{{ privsub }}"
+          cidr: 10.6.6.0/24
+          dns_nameservers:
+          - 8.8.8.8
+

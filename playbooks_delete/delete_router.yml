@@ -1,0 +1,21 @@
+
+- name: File=delte_router.yml Delete Router
+  hosts: local
+  vars_files:
+    - vars/metacloud_vars.yml
+
+  tasks:
+
+      - shell: neutron router-gateway-clear "{{ router }}"
+        ignore_errors: yes 
+      - shell: neutron router-interface-delete "{{ router }}" "{{ privsub }}" 
+        ignore_errors: yes 
+      - shell: neutron router-delete "{{ router }}"
+        ignore_errors: yes  
+     #- os_router:
+      #    state: absent
+       #   name: "{{ router }}"
+          #project: "{{ project }}"
+          #network: Trial 12 Public Network
+          #interfaces:
+           # - "{{ privsub }}"

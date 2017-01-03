@@ -1,0 +1,7 @@
+     
+  - include: playbooks_delete/delete_router.yml
+  - include: playbooks_delete/delete_net.yml
+  - include: playbooks_delete/quota_default.yml
+  - include: playbooks_delete/delete_tenant.yml
+  - include: playbooks_delete/imagedelete.yml
+  - include: playbooks_delete/delete_hostagg.yml

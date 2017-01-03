@@ -1,0 +1,24 @@
+
+- name: File=create_tenant.yml Create Tenant ID and add user
+  connection: local
+  hosts: local
+  gather_facts: false
+  vars_files:
+    - vars/metacloud_vars.yml
+
+  tasks:
+   - name: Create Tenant id to tenant.txt 
+     os_project:
+      state: present
+      name: "{{ tenant_name }}"
+      description: demodescription
+   
+   - name: Add user to project
+    # shell: keystone user-role-add --user={{ user }} --tenant="{{ tenant_name }}" --role=admin
+     shell: openstack role add --user {{ user }}  --project {{ tenant_name }} admin 
+     ignore_errors: yes
+   
+   - name: Display Quota
+     shell: nova quota-defaults
+     register: shell_output3
+   - debug: msg="{{ shell_output3.stdout }}" 

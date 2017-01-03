@@ -1,0 +1,35 @@
+- name: File=router.yml  Create Network and Router 
+  hosts: local
+  vars_files:
+    - vars/metacloud_vars.yml
+
+  tasks:
+  
+ 
+    - os_network:
+          state: present
+          name: "{{ privnet }}"
+          project: "{{ project }}"
+    - os_subnet:
+          state: present
+          network_name: "{{ privnet }}"
+          project: "{{ project }}"
+          name: "{{ privsub }}"
+          cidr: 10.6.6.0/24
+          dns_nameservers:
+          - 8.8.8.8
+
+- name: Create Router
+  hosts: local
+  vars_files:
+    - vars/metacloud_vars.yml
+          
+  tasks:  
+
+    - os_router:
+          state: present
+          name: "{{ router }}"
+          project: "{{ project }}"
+          network: Trial 12 Public Network
+          interfaces:
+             - "{{ privsub }}"

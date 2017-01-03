@@ -1,0 +1,25 @@
+
+- name: Create Tenant ID and add user
+  connection: local
+  hosts: local
+  gather_facts: false
+  vars_files:
+    - vars/metacloud_vars.yml
+
+  tasks:
+   - name: Create vtcloud project and save tenant id to tenant.txt 
+     shell: keystone tenant-create --name="{{ tenant_name }}"  
+     register: shell_output1
+   - debug: msg="{{ shell_output1.stdout }}" 
+   
+   - name: add user
+     shell: keystone user-role-add --user={{ user }} --tenant="{{ tenant_name }}" --role=admin
+   - name: Display Tenant ID
+     shell: keystone tenant-list | awk '$4 == {{ tenant_name }} {print $2}'
+     register: shell_output2
+   - debug: msg="{{ shell_output2.stdout }}" 
+   - local_action: copy content="{{ shell_output2.stdout }}" dest=/home/ubuntu/03-Ansible/tenant.txt
+   - name: Display Quota
+     shell: nova quota-defaults
+     register: shell_output3
+   - debug: msg="{{ shell_output3.stdout }}" 

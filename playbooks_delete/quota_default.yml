@@ -1,0 +1,23 @@
+
+- name: file=quotadefault.yml List Quota and adjust Quota back to defaults
+  connection: local
+  hosts: local
+  gather_facts: false
+  vars_files:
+    - vars/metacloud_vars.yml
+
+  tasks:
+   - name: List Quota 
+     shell: nova quota-defaults 
+     register: shell_output2
+   - debug: msg="{{ shell_output2.stdout }}" 
+ 
+   - name: Adjust Quota for Demo
+     shell: nova quota-class-update --instances={{instances}} --cores={{cores}} --ram={{ram}}  --floating-ips={{floatingips}} --security-groups={{securitygroups}} default
+
+   - name: Display Quota
+     shell: nova quota-defaults
+     register: shell_output2
+   - debug: msg="{{ shell_output2.stdout }}" 
+
+

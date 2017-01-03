@@ -1,0 +1,18 @@
+- name: file=delete_hostagg.yml Remove Host Aggregate for Web servers
+  connection: local
+  hosts: local
+  gather_facts: false
+  vars_files:
+    - vars/metacloud_vars.yml
+
+  tasks:
+
+   - name: Delete Flavor
+     shell: nova flavor-delete "{{ flavor_name }}"
+
+   - name: Remove Host to Aggregate
+     shell: nova aggregate-remove-host "{{ aggregate_name }}" "{{ hypervisor1 }}"
+
+   - name: Delete Aggregate Name
+     shell: nova aggregate-delete "{{ aggregate_name }}"
+

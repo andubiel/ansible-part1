@@ -1,0 +1,31 @@
+---
+#Tenant variables
+keypair: ciscolive
+security_group: default,Internal-all
+tenant_name: demoproject
+user: andubiel
+#Image variables
+image_name: demoimage
+file_name: cirros-0.3.0-x86_64-disk.img
+#Quota Variables
+instances: 200
+cores: 100
+ram: -1
+floatingips: 20
+securitygroups: 100
+#Host Aggregate
+hypervisor1: mhv1.trial12.mc.metacloud.in
+hypervisor2: mhv2.trial12.mc.metacloud.in
+hypervisor3: mhv3.trial12.mc.metacloud.in
+aggregate_name: Webagg
+flavor_name: demo.large
+flavor_ram: 2000
+flavor_disk: 80
+flavor_vcpu: 2
+#Cinder Volumes
+volume_name: database
+volume_size: 100
+#Router
+router: demo_router
+privnet: priv2
+privsub: priv2

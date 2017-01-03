@@ -1,0 +1,39 @@
+- name: File=create_hostagg.yml Creating a new Host Aggregate for Web servers
+  connection: local
+  hosts: local
+  gather_facts: false
+  vars_files:
+    - vars/metacloud_vars.yml
+
+  tasks:
+
+   - name: Set Aggregate Name
+     shell: nova aggregate-create "{{ aggregate_name }}"
+     
+   - name: List Aggregate ID
+     shell: nova aggregate-list | grep "{{ aggregate_name }}" | awk ' {print $2} '
+     register: shell_output1
+   - debug: msg="{{ shell_output1.stdout }}"
+
+   - name: Add Aggregate ID to  Host Aggregate 
+     shell: nova aggregate-set-metadata {{ aggregate_name }} AGID="{{ shell_output1.stdout }}"
+
+   - name: Add Host to Aggregate
+     shell: nova aggregate-add-host "{{ aggregate_name }}" "{{ hypervisor1 }}"
+  
+   - name: Create Flavor
+     shell: nova flavor-create "{{ flavor_name }}" auto "{{ flavor_ram }}" "{{ flavor_disk }}" "{{flavor_vcpu}}"
+
+   - name: Add flavor key
+     shell: nova flavor-key "{{ flavor_name }}" set AGID="{{ shell_output1.stdout }}"
+
+   - name: Display Aggregate
+     shell: nova aggregate-list 
+     register: shell_output2 
+   - debug: msg="{{ shell_output2.stdout }}"
+   
+   - name: Display Aggregate FLavor for Web 
+     shell: nova flavor-list | grep {{ flavor_name }} | awk '{ print $2 } '
+     register: shell_output3
+   - debug: msg="{{ shell_output3.stdout }}"
+   - local_action: copy content="{{ shell_output3.stdout }}" dest=/home/cloud/03-Ansible/output/flavor.txt 

@@ -1,0 +1,5 @@
+     - include: playbooks_create/quota_update.yml
+     - include: playbooks_create/create_tenant.yml
+     - include: playbooks_create/imageupload.yml
+     - include: playbooks_create/create_hostagg.yml
+     - include: playbooks_create/router.yml
